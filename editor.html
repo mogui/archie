@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="/src/styles.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tauri App</title>
-    <script type="module" src="/src/main.ts" defer></script>
+    <script type="module" src="/src/editor.ts" defer></script>
     <style>
       .logo.vite:hover {
         filter: drop-shadow(0 0 2em #747bff);
@@ -18,8 +18,6 @@
   </head>
 
   <body>
-    <div class="container">
-      <h1>Welcome to Archie</h1>
-    </div>
+    <div class="container" id="monaco"></div>
   </body>
 </html>
