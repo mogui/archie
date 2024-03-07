@@ -20,7 +20,13 @@ Desired features
   - open ~iframe-like for
     - .drawio
     - .excalidraw
+- sistema template
+  - per tipologia di file grafico abbiamo dei templte (tipo, sequence plantuml o mermaid etc...)
+  - tempaltes personalizzabnili ed estendibili
+  - preferenze menu new
 - Native menu
+  - new ...
+    - sequence diagram ...
   - open
   - save
   - close

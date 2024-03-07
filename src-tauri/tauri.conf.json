@@ -13,6 +13,9 @@
   "tauri": {
     "allowlist": {
       "all": false,
+      "dialog": {
+        "all": true
+      },
       "fs": {
         "scope": ["/**"],
         "all": true

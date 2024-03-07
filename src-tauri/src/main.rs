@@ -1,7 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use tauri_api::dialog::{select, Response};
+use tauri_api::dialog::{select, Response, message};
 
 use tauri::{Manager, WindowMenuEvent};
 use log::error;
@@ -14,13 +14,6 @@ mod menu;
 #[derive(Clone, serde::Serialize)]
 struct Payload {
   message: String,
-}
-
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-#[tauri::command]
-fn greet(name: &str) -> String {
-  error!("selected file: {}", name);
-  name.to_string()
 }
 
 
@@ -37,26 +30,43 @@ fn file_hash(filepath: &String) -> String {
   format!("{:x}", window_hash)
 }
 
-fn open_file(filepath: String, event: WindowMenuEvent){
-  let extension = get_extension_from_filename(filepath.as_str());
-  let template = match extension {
-    Some(ext) => {
-      match ext {
-        "md" => "editor.html",
-        "mermaid" => "editor.html",
-        "plantuml" => "editor.html",
-        _ => "editor.html",
+#[tauri::command]
+fn invoke_open_file(app_handle: tauri::AppHandle){  
+  open_file(&app_handle);
+}
+// message( "Tauri", "Tauri is awesome!")
+
+fn open_file(app_handle: &tauri::AppHandle) {
+  match select(Some("md,mermaid,plantuml,drawio"), Some(".")) {
+    Ok(response) => {
+      match response {
+        Response::Okay(selected_path) => {
+          let extension = get_extension_from_filename(selected_path.as_str());
+          let template = match extension {
+            Some(ext) => {
+              match ext {
+                "md" => "pages/markdown.html",
+                "mermaid" => "pages/mermaid.html",
+                "plantuml" => "pages/plantuml.html",
+                _ => "pages/editor.html",
+              }
+            },
+            None => "editor.html",
+          };
+          let _ = tauri::WindowBuilder::new(
+            app_handle,
+            file_hash(&selected_path), /* the unique window label */
+            tauri::WindowUrl::App(format!("{}#{}", template, selected_path).into())
+          ).build().unwrap();
+        }
+        _ => {}
       }
     },
-    None => "editor.html",
-  };
-  let _ = tauri::WindowBuilder::new(
-    &event.window().app_handle(),
-    file_hash(&filepath), /* the unique window label */
-    tauri::WindowUrl::App(format!("{}#{}", template, filepath).into())
-  ).build().unwrap();
-}
+    _ => {},
+  }
 
+  
+}
 
 fn main() {
     env_logger::init();
@@ -65,17 +75,11 @@ fn main() {
         .menu(menu)
         .on_menu_event(|event| match event.menu_item_id() {
             "open" => {
-                let response = select(Some("md,mermaid,plantuml,drawio"), Some(".")).unwrap();
-                match response {
-                    Response::Okay(selected_path) => {
-                        open_file(selected_path, event);
-                    }
-                    _ => {}
-                }
+                open_file(&event.window().app_handle())
               }
               _ => {}
         })
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![invoke_open_file])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

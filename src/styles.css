@@ -122,3 +122,6 @@ button {
     background-color: #0f0f0f69;
   }
 }
+.editor-view-button-group {
+  margin: 15px;
+} 

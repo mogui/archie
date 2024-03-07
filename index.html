@@ -2,24 +2,33 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="/src/styles.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tauri App</title>
+    <!-- <link rel="stylesheet" href="/src/styles.css" /> -->
     <script type="module" src="/src/main.ts" defer></script>
-    <style>
-      .logo.vite:hover {
-        filter: drop-shadow(0 0 2em #747bff);
-      }
-
-      .logo.typescript:hover {
-        filter: drop-shadow(0 0 2em #2d79c7);
-      }
-    </style>
+    <script type="module" src="/src/index.ts" defer></script>
+    
   </head>
 
   <body>
-    <div class="container">
-      <h1>Welcome to Archie</h1>
-    </div>
+    <div uk-grid class="uk-grid uk-child-width-1-2@s uk-text-middle">
+        <div class="uk-card uk-card-primary uk-card-body uk-height-viewport uk-text-center uk-text-middle">
+            <h3 class="uk-card-title">Welcome to Archie</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        </div>
+        <div class="uk-card uk-card-body uk-height-viewport uk-text-middle">
+            <button class="uk-button uk-button-primary" id="open-btn">Open File</button> 
+            <button class="uk-button uk-button-primary" id="open-btn">Settings</button> 
+            <hr class="uk-divider-icon">
+            <ul class="uk-list uk-list-striped">
+                <li>List item 1</li>
+                <li>List item 2</li>
+                <li>List item 3</li>
+                <li>List item 4 with some more text wrapping into the next line</li>
+                <li>List item 5</li>
+                <li>List item 6</li>
+            </ul>
+        </div>
+  </div>
   </body>
 </html>

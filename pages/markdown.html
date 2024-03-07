@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Archie :: {asd}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <script type="module" src="/src/main.ts" defer></script>
+    <script type="module" src="/src/markdown.ts" defer></script>
+    <style>
+      .show {
+        display: block;
+      }
+      .hide {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="">
+      <div class="uk-flex uk-flex-right">
+        <div class="uk-button-group editor-view-button-group">
+            <a class="uk-button uk-button-default uk-button-small" id="view-code" href="#"><span uk-icon="icon: code" class="uk-icon"></span></a>
+            <a class="uk-button uk-button-default uk-button-small" id="view-preview" href="#"><span uk-icon="icon: search" class="uk-icon"></span></a>
+            <a class="uk-button uk-button-default uk-button-small uk-button-primary" id="view-both" href="#"><span uk-icon="icon: shrink" class="uk-icon"></span></a>
+        </div>
+      </div>
+      
+      <div uk-grid class="uk-grid  uk-text-middle">
+          <div class="uk-card uk-width-1-2@s uk-card-body uk-height-viewport uk-text-center uk-text-middle" id="panel-code">
+              <div id="monaco">asd</div>
+          </div>
+          <div class="uk-card uk-card-body uk-height-viewport uk-text-center" id="panel-preview">
+              Preview
+          </div>
+      </div>
+    </div>
+    
+  </body>
+</html>
