@@ -1,32 +1,61 @@
-
-
-// -- UIkit JS --
-import UIkit from 'uikit';
-
 // Cash
 import $ from "cash-dom";
 
 // -- Monaco js --
-import * as MonacoEditor from 'monaco-editor';
+import * as monaco from 'monaco-editor';
 
+// -- Marked --
+import * as marked from "marked";
+
+// Markdown Stylesheet
+// import github_markdown_light from ?url';
+import github_theme from  '../node_modules/github-markdown-css/github-markdown-dark.css?url'
+// -- Tauri -- 
 import { readTextFile } from '@tauri-apps/api/fs';
 
-document.addEventListener('uikit:init', async () => {
-  // if(window.location.hash){
-  //   const filename = window.location.hash.replace('#', '');
-  //   const contents = await readTextFile(filename);
-  //   monaco.editor.create(document.getElementById('monaco') as HTMLElement, {
-  //     value: contents,
-  //     language: 'javascript'
-  //   });
-  // }
-  console.log("loaded");
-  
+window.addEventListener("DOMContentLoaded", async () => {
+  // self.MonacoEnvironment = {
+  //   getWorkerUrl: function (_, label) {
+  //     if (label === 'json') {
+  //       return './json.worker.bundle.js';
+  //     }
+  //     if (label === 'css' || label === 'scss' || label === 'less') {
+  //       return './css.worker.bundle.js';
+  //     }
+  //     if (label === 'html' || label === 'handlebars' || label === 'razor') {
+  //       return './html.worker.bundle.js';
+  //     }
+  //     if (label === 'typescript' || label === 'javascript') {
+  //       return './ts.worker.bundle.js';
+  //     }
+  //     if (label === 'markdown' || label === 'javascript') {
+  //       return './md.worker.bundle.js';
+  //     }
+  //     return './editor.worker.bundle.js';
+  //   }
+  // };
+  const filename = window.location.hash.replace('#', '');
+  const contents = (filename !== '')? await readTextFile(filename) : "";
+  const editor = monaco.editor.create(document.getElementById('panel-code') as HTMLElement, {
+    value: contents,
+    language: "markdown",
+    lineNumbers: "on",
+    wordWrap: "wordWrapColumn",
+	  wordWrapColumn: 80,
+    minimap: {
+      enabled: false
+    },
+    roundedSelection: false,
+    scrollBeyondLastLine: false,
+    automaticLayout: true, // <<== the important part
+    readOnly: false,
+    theme: "vs-dark",
+  });
 
-  // UIkit.util.on('#editor-switch', 'show', function () {
-  //   // do something
-  //   console.log("asd");
-  // });
+  editor.getModel()?.onDidChangeContent(async  (_) => {
+    var html = `<style> @import url(\"${github_theme}\"); </style>` + await marked.parse(editor.getValue());
+    $('#panel-preview').html(html);  
+  });
 
   $('#view-preview').on('click', (event)=> {
     event.preventDefault();
@@ -51,16 +80,6 @@ document.addEventListener('uikit:init', async () => {
     $('#panel-preview').addClass("uk-width-1-2@s").removeClass("uk-width-1-1@s").show();
     $('#panel-code').addClass("uk-width-1-2@s").removeClass("uk-width-1-1@s").show();
   });
-
-  const filename = window.location.hash.replace('#', '');
-  
-  const contents = (filename !=="")? await readTextFile(filename) : "sd";
-
-  MonacoEditor.editor.create(document.getElementById('monaco') as HTMLElement, {
-    value: contents,
-    language: 'markdown'
-  });
-  
 });
 
 
