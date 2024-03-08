@@ -17,6 +17,8 @@ Desired features
     - .plantuml
     - .mermaid
     - .md
+      - switch template
+      - export pdf risolvendo li link a docuemtni noti renderizzati
   - open ~iframe-like for
     - .drawio
     - .excalidraw
@@ -31,10 +33,5 @@ Desired features
   - save
   - close
 
-## Stack
-
-- tauri rust shell
-- frontend???
-  - editor Monaco / CodeMirror
 
     

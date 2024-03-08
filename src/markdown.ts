@@ -9,7 +9,7 @@ import * as marked from "marked";
 
 // Markdown Stylesheet
 // import github_markdown_light from ?url';
-import github_theme from  '../node_modules/github-markdown-css/github-markdown-dark.css?url'
+import github_theme from 'github-markdown-css/github-markdown-light.css?url'
 // -- Tauri -- 
 import { readTextFile } from '@tauri-apps/api/fs';
 
@@ -51,10 +51,10 @@ window.addEventListener("DOMContentLoaded", async () => {
     readOnly: false,
     theme: "vs-dark",
   });
+  $('#markdown-theme').attr('href', github_theme);
 
-  editor.getModel()?.onDidChangeContent(async  (_) => {
-    var html = `<style> @import url(\"${github_theme}\"); </style>` + await marked.parse(editor.getValue());
-    $('#panel-preview').html(html);  
+  editor.getModel()?.onDidChangeContent(async  (_) => {  
+    $('#panel-preview').html(await marked.parse(editor.getValue()));  
   });
 
   $('#view-preview').on('click', (event)=> {
