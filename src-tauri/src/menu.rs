@@ -26,7 +26,9 @@ pub fn setup_menu() -> Menu {
 
     let mut file_menu = Menu::new();
     file_menu = file_menu
-        .add_item(CustomMenuItem::new("open".to_string(), "Open"))
+        .add_item(CustomMenuItem::new("save".to_string(), "Save").accelerator("CommandOrControl+S"))
+        .add_native_item(MenuItem::Separator)
+        .add_item(CustomMenuItem::new("open".to_string(), "Open").accelerator("CommandOrControl+O"))
         .add_native_item(MenuItem::Separator)
         .add_native_item(MenuItem::CloseWindow);
     

@@ -10,8 +10,18 @@ import * as marked from "marked";
 // Markdown Stylesheet
 // import github_markdown_light from ?url';
 import github_theme from 'github-markdown-css/github-markdown-light.css?url'
+
 // -- Tauri -- 
 import { readTextFile } from '@tauri-apps/api/fs';
+import { listen } from '@tauri-apps/api/event';
+import { message } from '@tauri-apps/api/dialog';
+import { invoke } from '@tauri-apps/api/tauri';
+
+interface SaveEvent {
+  label: string;
+}
+
+
 
 window.addEventListener("DOMContentLoaded", async () => {
   // self.MonacoEnvironment = {
@@ -34,8 +44,9 @@ window.addEventListener("DOMContentLoaded", async () => {
   //     return './editor.worker.bundle.js';
   //   }
   // };
-  const filename = window.location.hash.replace('#', '');
-  const contents = (filename !== '')? await readTextFile(filename) : "";
+  const url_params = new URLSearchParams(window.location.search);
+  const filename = url_params.get('path');
+  const contents = (filename !== null)? await readTextFile(filename) : "";
   const editor = monaco.editor.create(document.getElementById('panel-code') as HTMLElement, {
     value: contents,
     language: "markdown",
@@ -51,6 +62,19 @@ window.addEventListener("DOMContentLoaded", async () => {
     readOnly: false,
     theme: "vs-dark",
   });
+
+  document.addEventListener('uikit:init', async () => {
+    // do something
+    await listen<SaveEvent>('save', async (event) => {
+        const url_params = new URLSearchParams(window.location.search);
+        // Handle event only if it is directed to intended window
+        if(event.payload.label == url_params.get('label')){
+          console.log("save file");  
+          invoke('save_file', { path: url_params.get('path'), content: editor.getValue() });
+        }
+    });
+  });
+
   $('#markdown-theme').attr('href', github_theme);
 
   editor.getModel()?.onDidChangeContent(async  (_) => {  

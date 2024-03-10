@@ -5,11 +5,12 @@
 Desired features
 
 - open/edit following filetype:
+  - .md
   - .plantuml
   - .mermaid
   - .drawio
   - .excalidraw
-  - .md
+  
 - One file per window
 - A welcome window with a smart last opened documents
 - an editor accordingly to the file type

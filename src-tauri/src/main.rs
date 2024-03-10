@@ -9,11 +9,12 @@ use sha2::{Sha256, Digest};
 
 use std::path::Path;
 use std::ffi::OsStr;
+use std::{fs::File, io::Write};
 
 mod menu;
 #[derive(Clone, serde::Serialize)]
-struct Payload {
-  message: String,
+struct SaveFile {
+  label: String,
 }
 
 
@@ -34,7 +35,23 @@ fn file_hash(filepath: &String) -> String {
 fn invoke_open_file(app_handle: tauri::AppHandle){  
   open_file(&app_handle);
 }
+
+#[tauri::command]
+fn save_file(_: tauri::AppHandle, path:String, content:String){  
+  
+  let file = File::open(&file_path);
+  file.write_all(&contents);
+  message( format!("{} {}", path, content), "Alert!");
+}
 // message( "Tauri", "Tauri is awesome!")
+
+fn save_current(app_handle: &tauri::AppHandle) {
+
+  if let Some(current_window) = app_handle.get_focused_window() {
+      let label = current_window.label();
+      current_window.emit("save", SaveFile { label: label.into() }).unwrap();    
+  }
+}
 
 fn open_file(app_handle: &tauri::AppHandle) {
   match select(Some("md,mermaid,plantuml,drawio"), Some(".")) {
@@ -53,10 +70,11 @@ fn open_file(app_handle: &tauri::AppHandle) {
             },
             None => "editor.html",
           };
+          let label = file_hash(&selected_path);
           let _ = tauri::WindowBuilder::new(
             app_handle,
-            file_hash(&selected_path), /* the unique window label */
-            tauri::WindowUrl::App(format!("{}#{}", template, selected_path).into())
+            &label, /* the unique window label */
+            tauri::WindowUrl::App(format!("{}?path={}&label={}", template, selected_path, &label).into())
           ).build().unwrap();
         }
         _ => {}
@@ -74,12 +92,12 @@ fn main() {
     tauri::Builder::default()
         .menu(menu)
         .on_menu_event(|event| match event.menu_item_id() {
-            "open" => {
-                open_file(&event.window().app_handle())
-              }
-              _ => {}
+            "open" => open_file(&event.window().app_handle()),
+            "save" => save_current(&event.window().app_handle()),
+            _ => {}
         })
-        .invoke_handler(tauri::generate_handler![invoke_open_file])
+        .invoke_handler(tauri::generate_handler![invoke_open_file, save_file])
+        // .invoke_handler(tauri::generate_handler![save_file])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
