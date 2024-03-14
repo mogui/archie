@@ -35,4 +35,8 @@ Desired features
   - close
 
 
-    
+  ## Plantuml
+
+  - download jar https://api.github.com/repos/plantuml/plantuml/releases
+  - run command line https://plantuml.com/command-line
+

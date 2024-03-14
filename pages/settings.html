@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Archie :: {asd}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <script type="module" src="/src/main.ts" defer></script>
+    <script type="module" src="/src/settings.ts" defer></script>
+</head>
+
+<body>
+    <div class="uk-container">
+        <div class="uk-margin ">
+            <h2 class="uk-heading-small">Settings</h2>
+            <div uk-grid class="uk-grid uk-text-middle uk-child-width-1-1">
+                <form class="uk-form-horizontal">
+                    <fieldset class="uk-fieldset">
+                        <div class="uk-margin">
+                            <label class="uk-form-label" for="plantuml-jar">Plantuml jar path</label>
+                            <div class="uk-form-controls">
+                                <input class="uk-input" id="plantuml-jar" type="text" placeholder="Some path...">
+                                <div class="uk-grid uk-margin">
+                                    <div class="uk-width-auto">
+                                        <button class="uk-button uk-button-primary uk-button-small uk-margin" id="plantuml-jar-btn">Download Latest jar</button>
+                                    </div>
+                                    <div class="uk-width-1-2" id="loader">
+                                        <div class="loader"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

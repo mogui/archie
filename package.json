@@ -18,6 +18,8 @@
     "marked": "^12.0.1",
     "marked-code-preview": "^1.3.6",
     "monaco-editor": "^0.45.0",
+    "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#v1",
+    "tauri-settings": "^0.3.4",
     "uikit": "^3.19.1"
   },
   "devDependencies": {

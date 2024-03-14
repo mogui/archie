@@ -39,8 +39,8 @@ fn invoke_open_file(app_handle: tauri::AppHandle){
 #[tauri::command]
 fn save_file(_: tauri::AppHandle, path:String, content:String){  
   
-  let file = File::open(&file_path);
-  file.write_all(&contents);
+  let file = File::open(&path).unwrap();
+  // file.write_all(content.as_bytes());
   message( format!("{} {}", path, content), "Alert!");
 }
 // message( "Tauri", "Tauri is awesome!")
@@ -51,6 +51,15 @@ fn save_current(app_handle: &tauri::AppHandle) {
       let label = current_window.label();
       current_window.emit("save", SaveFile { label: label.into() }).unwrap();    
   }
+}
+
+#[tauri::command]
+fn open_settings(app_handle: tauri::AppHandle) {
+  let _ = tauri::WindowBuilder::new(
+    &app_handle,
+    "settings", /* the unique window label */
+    tauri::WindowUrl::App("pages/settings.html".into())
+  ).title("Settings").build().unwrap();
 }
 
 fn open_file(app_handle: &tauri::AppHandle) {
@@ -75,7 +84,7 @@ fn open_file(app_handle: &tauri::AppHandle) {
             app_handle,
             &label, /* the unique window label */
             tauri::WindowUrl::App(format!("{}?path={}&label={}", template, selected_path, &label).into())
-          ).build().unwrap();
+          ).title(selected_path).maximized(true).build().unwrap();
         }
         _ => {}
       }
@@ -94,10 +103,12 @@ fn main() {
         .on_menu_event(|event| match event.menu_item_id() {
             "open" => open_file(&event.window().app_handle()),
             "save" => save_current(&event.window().app_handle()),
+            "settings" => open_settings(event.window().app_handle()),
             _ => {}
         })
-        .invoke_handler(tauri::generate_handler![invoke_open_file, save_file])
-        // .invoke_handler(tauri::generate_handler![save_file])
+        
+        .invoke_handler(tauri::generate_handler![invoke_open_file, save_file, open_settings])
+        .plugin(tauri_plugin_store::Builder::default().build())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

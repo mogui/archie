@@ -13,16 +13,38 @@
   "tauri": {
     "allowlist": {
       "all": false,
+      "http": {
+        "all": true,
+        "request": true,
+        "scope": ["https://api.github.com/*", "https://github.com/*"]
+      },
+      
       "dialog": {
         "all": true
       },
       "fs": {
-        "scope": ["/**"],
+        "createDir": true,
+        "readDir": true,
+        "readFile": true,
+        "writeFile": true,
+        "scope": ["/**", "$APPCONFIG", "$APPCONFIG/*"],
+        "all": true
+      },
+      "path": {
         "all": true
       },
       "shell": {
-        "all": false,
-        "open": true
+        "all": true,
+        "execute": true, 
+        "sidecar": true, 
+        "open": true,
+        "scope": [
+          {
+            "name": "create-dir",
+            "cmd": "mkdir",
+            "args": [ "-p", { "validator": "\\S+" }]
+          }
+        ]
       }
     },
     "bundle": {
@@ -44,6 +66,7 @@
       {
         "fullscreen": false,
         "resizable": true,
+        "maximized": true,
         "title": "archie",
         "width": 800,
         "height": 600

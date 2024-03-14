@@ -14,12 +14,9 @@ import github_theme from 'github-markdown-css/github-markdown-light.css?url'
 // -- Tauri -- 
 import { readTextFile } from '@tauri-apps/api/fs';
 import { listen } from '@tauri-apps/api/event';
-import { message } from '@tauri-apps/api/dialog';
 import { invoke } from '@tauri-apps/api/tauri';
 
-interface SaveEvent {
-  label: string;
-}
+
 
 
 

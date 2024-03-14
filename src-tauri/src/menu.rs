@@ -14,6 +14,8 @@ pub fn setup_menu() -> Menu {
             AboutMetadata::default(),
           ))
           .add_native_item(MenuItem::Separator)
+          .add_item(CustomMenuItem::new("settings".to_string(), "Settings").accelerator("CommandOrControl+,"))
+          .add_native_item(MenuItem::Separator)
           .add_native_item(MenuItem::Services)
           .add_native_item(MenuItem::Separator)
           .add_native_item(MenuItem::Hide)
