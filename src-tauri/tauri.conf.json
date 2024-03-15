@@ -18,19 +18,23 @@
         "request": true,
         "scope": ["https://api.github.com/*", "https://github.com/*"]
       },
-      
       "dialog": {
         "all": true
       },
       "fs": {
-        "createDir": true,
-        "readDir": true,
-        "readFile": true,
-        "writeFile": true,
-        "scope": ["/**", "$APPCONFIG", "$APPCONFIG/*"],
-        "all": true
+        "all": true,
+        "scope": [
+          "**"
+        ]
+      },
+      "protocol": {
+        "asset": true,
+        "assetScope": ["**"]
       },
       "path": {
+        "all": true
+      },
+      "os": {
         "all": true
       },
       "shell": {
@@ -43,6 +47,11 @@
             "name": "create-dir",
             "cmd": "mkdir",
             "args": [ "-p", { "validator": "\\S+" }]
+          },
+          {
+            "name": "plantuml",
+            "cmd": "java",
+            "args": true
           }
         ]
       }
@@ -52,11 +61,11 @@
       "targets": "all",
       "identifier": "it.mogui.archie",
       "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
+        "icons/32-mac.png",
+        "icons/128-mac.png",
+        "icons/256-mac.png",
+        "icons/512-mac.png"
+        
       ]
     },
     "security": {

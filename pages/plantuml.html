@@ -10,15 +10,20 @@
   </head>
 
   <body>
-    <div class="uk-container">
-      <div uk-grid class="uk-grid uk-text-middle">
-          <div class="uk-card uk-width-1-2@s uk-height-viewport" id="panel-code">
-              
-          </div>
-          
-          <div class="uk-card uk-card-body uk-width-1-2@s uk-height-viewport markdown-body" id="panel-preview">
-              <h1>yup</h1>
-              <h2>yup</h2>
+    <div class="">
+      <div class="uk-flex uk-flex-right" >
+        <div class="uk-button-group editor-view-button-group">    
+            <div class="uk-padding-small uk-padding-remove-vertical" id="loader">
+              <div class="loader" ></div>
+            </div>
+            <a class="uk-button uk-button-primary uk-button-small" id="render" href="#"><span uk-icon="icon: refresh" class="uk-icon"></span></a>
+        </div>
+      </div>
+      <div class="split" uk-height-viewport="offset-top: true; offset-bottom:true;">
+          <div  id="panel-code" uk-overflow-auto></div>
+          <div class="gutter-col gutter-col-1"></div>
+          <div id="panel-preview" uk-overflow-auto>
+            <img src = "" alt="plantuml preview" id="svg-preview" class="uk-align-center"/>
           </div>
       </div>
     </div>

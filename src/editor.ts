@@ -2,6 +2,7 @@ import * as monaco from 'monaco-editor';
 import { readTextFile } from '@tauri-apps/api/fs';
 import { listen } from '@tauri-apps/api/event';
 import { invoke } from '@tauri-apps/api/tauri';
+import { PUmlExtension } from '@sinm/monaco-plantuml';
 
 interface SaveEvent {
   label: string;
@@ -29,6 +30,8 @@ async function getEditor(
     readOnly: false,
     theme: "vs-dark",
   });
+  const extension = new PUmlExtension();
+  extension.active(editor);
 
   await listen<SaveEvent>('save', async (event) => {
     const url_params = new URLSearchParams(window.location.search);

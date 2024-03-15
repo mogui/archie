@@ -3,8 +3,7 @@
 
 use tauri_api::dialog::{select, Response, message};
 
-use tauri::{Manager, WindowMenuEvent};
-use log::error;
+use tauri::{Manager};
 use sha2::{Sha256, Digest};
 
 use std::path::Path;
@@ -12,6 +11,7 @@ use std::ffi::OsStr;
 use std::{fs::File, io::Write};
 
 mod menu;
+
 #[derive(Clone, serde::Serialize)]
 struct SaveFile {
   label: String,
